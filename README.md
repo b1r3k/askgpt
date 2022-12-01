@@ -1,6 +1,17 @@
 ## Setup
 
-Get you API KEY form openai.com
+1. Get you API KEY form openai.com
+2. Create a file called `.env` and put your API KEY in it
+
+```bash
+OPENAI_API_KEY=XYZ
+```
+
+3. Install [venthur/dotenv-cli](https://github.com/venthur/dotenv-cli)
+
+   pip install dotenv-cli
+
+4. Install [Poetry](https://python-poetry.org/docs/#installing-manually) and run `poetry install`
 
 ## Usage
 
