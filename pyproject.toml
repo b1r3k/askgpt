@@ -5,8 +5,15 @@ description = ""
 authors = ["Lukasz Jachym <lukasz.jachym@gmail.com>"]
 readme = "README.md"
 
+[tool.poetry.scripts]
+askgpt = "askgpt.cli:main"
+
+
 [tool.poetry.dependencies]
 python = "^3.10"
+openai = "^0.25.0"
+spacy = "^3.4.3"
+transformers = "^4.24.0"
 
 
 [build-system]
