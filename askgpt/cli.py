@@ -38,6 +38,37 @@ def gpt_complete(prompt, *,
         return completion_choice.text.strip()
 
 
+def summarize_text(text, compression_multiplier, max_tokens=256):
+    text_token_size = len(tokenizer(text)['input_ids'])
+    logger.debug(f"** Input text token size: {text_token_size}")
+
+    prepend = "Write a concise summary of the following text:\n\n"
+    prepend_token_size = len(tokenizer(prepend)['input_ids'])
+    max_chunk_size = (compression_multiplier * max_tokens) - max_tokens * 2 - prepend_token_size * 2
+    full_response = []
+    for idx, chunk in enumerate(get_chunks_from_paragraphs(text, max_chunk_size)):
+        if idx > 0:
+            question = f"""
+                Given summary of previous text, write a concise summary of the following 
+                text:
+                {chunk}
+                
+                Summary of previous text:
+                {response}
+                """
+        else:
+            question = prepend + chunk
+        question = question.strip()
+        logger.debug('Prompt: %s\n***\n', question)
+        response = gpt_complete(question, engine="text-davinci-003", max_tokens=max_tokens)
+        full_response.append(response)
+    full_response_text = '\n'.join(full_response)
+    full_response_token_size = len(tokenizer(full_response_text)['input_ids'])
+    print(full_response_text)
+    logger.debug(f"** Output text token size: {full_response_token_size}")
+    logger.info("** Compression: {:.2f}%".format(100 * (1 - full_response_token_size / text_token_size)))
+
+
 def main():
     args_parser = argparse.ArgumentParser(description="GPT CLI")
     args_parser.add_argument('--max-tokens', default=256, type=int, help="Max tokens per request response")
@@ -65,34 +96,9 @@ def main():
 
     prompt = sys.stdin.readlines()
     text = '\n'.join(prompt)
-    text_token_size = len(tokenizer(text)['input_ids'])
-    logger.debug(f"** Input text token size: {text_token_size}")
-
-    prepend = ""
-    prepend_token_size = 0
     if args.summarize:
-        prepend = "Write a concise summary of the following text:\n\n"
-        prepend_token_size = len(tokenizer(prepend)['input_ids'])
-    max_chunk_size = (compression_multiplier * args.max_tokens) - args.max_tokens * 2 - prepend_token_size * 2
-    full_response = []
-    for idx, chunk in enumerate(get_chunks_from_paragraphs(text, max_chunk_size)):
-        if idx > 0:
-            question = f"""
-            Given summary of previous text, write a concise summary of the following 
-            text:
-            {chunk}
-            
-            Summary of previous text:
-            {response}
-            """
-        else:
-            question = prepend + chunk
-        question = question.strip()
-        logger.debug('Prompt: %s\n***\n', question)
-        response = gpt_complete(question, engine="text-davinci-003", max_tokens=args.max_tokens)
-        full_response.append(response)
-    full_response_text = '\n'.join(full_response)
-    full_response_token_size = len(tokenizer(full_response_text)['input_ids'])
-    print(full_response_text)
-    logger.debug(f"** Output text token size: {full_response_token_size}")
-    logger.info("** Compression: {:.2f}%".format(100 * (1 - full_response_token_size / text_token_size)))
+        summarize_text(text, compression_multiplier, args.max_tokens)
+    else:
+        response = gpt_complete(text, engine="text-davinci-003", max_tokens=args.max_tokens)
+        print(response)
+
