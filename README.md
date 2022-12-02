@@ -34,3 +34,14 @@ OPENAI_API_KEY=XYZ
 1. Prefix article with question:
 
     echo -e "Write a concise summary of the following text:\n" | cat - article5.txt | dotenv --dotenv .env poetry run askgpt --max-tokens 500
+
+
+## References
+
+Loosely related to the topic
+
+1. [Summarizing Books with Human Feedback](https://openai.com/blog/summarizing-books/#samples)
+2. [Learning to Summarize with Human Feedback](https://openai.com/blog/learning-to-summarize-with-human-feedback/)
+3. [bart-large-cnn](https://huggingface.co/facebook/bart-large-cnn)
+   - [huggingface/transformers: 🤗 Transformers: State-of-the-art Machine Learning for Pytorch, TensorFlow, and JAX.](https://github.com/huggingface/transformers)
+3. [daveshap/RecursiveSummarizer](https://github.com/daveshap/RecursiveSummarizer)
