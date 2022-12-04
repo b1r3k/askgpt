@@ -40,9 +40,10 @@ OPENAI_API_KEY=XYZ
 
 Loosely related to the topic
 
-1. [Summarizing Books with Human Feedback](https://openai.com/blog/summarizing-books/#samples)
+1. [openai-cookbook/techniques_to_improve_reliability.md at main · openai/openai-cookbook](https://github.com/openai/openai-cookbook/blob/main/techniques_to_improve_reliability.md)
+2. [Summarizing Books with Human Feedback](https://openai.com/blog/summarizing-books/#samples)
 2. [Learning to Summarize with Human Feedback](https://openai.com/blog/learning-to-summarize-with-human-feedback/)
 3. [bart-large-cnn](https://huggingface.co/facebook/bart-large-cnn)
    - [huggingface/transformers: 🤗 Transformers: State-of-the-art Machine Learning for Pytorch, TensorFlow, and JAX.](https://github.com/huggingface/transformers)
    - [fairseq/examples/bart at main · facebookresearch/fairseq](https://github.com/facebookresearch/fairseq/tree/main/examples/bart)
-3. [daveshap/RecursiveSummarizer](https://github.com/daveshap/RecursiveSummarizer)
+4. [daveshap/RecursiveSummarizer](https://github.com/daveshap/RecursiveSummarizer)
