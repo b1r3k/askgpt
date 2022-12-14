@@ -46,7 +46,9 @@ def summarize_text(text, compression_multiplier, max_tokens=256):
     prepend_token_size = len(tokenizer(prepend)['input_ids'])
     max_chunk_size = (compression_multiplier * max_tokens) - max_tokens * 2 - prepend_token_size * 2
     full_response = []
-    for idx, chunk in enumerate(get_chunks_from_paragraphs(text, max_chunk_size)):
+    chunks = list(get_chunks_from_paragraphs(text, max_chunk_size))
+    logger.info(f"** Chunking text into {len(chunks)} chunks")
+    for idx, chunk in enumerate(chunks):
         if idx > 0:
             question = f"""
                 Given summary of previous text, write a concise summary of the following 
